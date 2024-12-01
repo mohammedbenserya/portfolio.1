@@ -28,7 +28,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost','https://portfolio-1-q4md.onrender.com']
 STATIC_URL='static/'
 STATIC_ROOT=BASE_DIR / 'assets'
 
