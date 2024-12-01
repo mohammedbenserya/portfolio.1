@@ -30,8 +30,8 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = True
 
 ALLOWED_HOSTS = ['localhost','127.0.0.1','portfolio-1-q4md.onrender.com']
-STATIC_URL='static/'
-STATIC_ROOT=BASE_DIR / 'assets'
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
 # Application definition
