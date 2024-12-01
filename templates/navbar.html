@@ -1,0 +1,27 @@
+{% url 'lens' as lens_url %}
+{% url 'zillow' as zillow_url %}
+{% url 'portfolio' as portfolio_url %}
+
+
+
+  
+
+
+<nav class="border-b border-blue-500/30 backdrop-blur-sm fixed w-full z-10">
+  <div class="container mx-auto px-6 py-4">
+      <div class="flex justify-between items-center">
+          <div class="text-2xl font-mono blueprint-text">Play Ground</div>
+          <div class="flex items-center space-x-6 font-mono">
+              <a href="{{ portfolio_url }}" 
+                 class="hover:text-blue-300 transition-colors {% if request.path == portfolio_url %}text-blue-400 border-b-2 border-blue-400{% endif %}">
+                 Portfolio</a>
+              <a href="{{ lens_url }}" 
+                 class="hover:text-blue-300 transition-colors {% if request.path == lens_url %}text-blue-400 border-b-2 border-blue-400{% endif %}">
+                 Google Lens</a>
+              <a href="{{ zillow_url }}" 
+                 class="hover:text-blue-300 transition-colors {% if request.path == zillow_url %}text-blue-400 border-b-2 border-blue-400{% endif %}">
+                 Zillow</a>
+          </div>
+      </div>
+  </div>
+</nav>

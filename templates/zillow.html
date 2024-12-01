@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="min-h-screen bg-blue-950 blueprint-grid py-20">
+  <div class="container mx-auto px-4">
+    <div class="max-w-2xl mx-auto">
+      <!-- Header -->
+      <h1 class="text-4xl font-mono mb-8 blueprint-text text-blue-200 text-center">Zillow Data Scraper</h1>
+      
+      <!-- Main Form Card -->
+      <div class="border border-blue-500/30 rounded-lg p-8 bg-blue-900/20 backdrop-blur-sm">
+        <!-- Loading Indicator -->
+        <div id="loading" class="flex justify-end hidden">
+          <span class="relative flex h-3 w-3">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-3 w-3 bg-blue-500"></span>
+          </span>
+        </div>
+
+        <!-- Form -->
+        <form method="POST" id="zillow-form" action="{% url 'get-zillow-data' %}" class="space-y-6">
+          <!-- Query Input -->
+          <div>
+            <label for="query" class="block font-mono text-blue-200 mb-2">Search Query:</label>
+            <input 
+              type="text" 
+              id="query" 
+              name="query" 
+              class="w-full bg-blue-900/20 border border-blue-500/30 rounded p-3 text-blue-100 placeholder-blue-300/50 focus:border-blue-400 focus:outline-none transition-colors"
+              placeholder="Enter location or property details..."
+            >
+          </div>
+
+          <!-- Checkbox -->
+          <div class="flex items-center">
+            <input 
+              type="checkbox" 
+              id="get_all_pages" 
+              name="get_all_pages" 
+              class="w-5 h-5 border-blue-500/30 rounded bg-blue-900/20 text-blue-500 focus:ring-blue-500 focus:ring-offset-0"
+            >
+            <label for="get_all_pages" class="ml-3 font-mono text-blue-200">
+              Get All Available Pages
+            </label>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="flex justify-center">
+            <button 
+              type="submit" 
+              class="px-6 py-3 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors font-mono focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-blue-900"
+            >
+              Start Scraping
+            </button>
+          </div>
+        </form>
+
+        <!-- Download Result -->
+        <div class="flex justify-end mt-6">
+          <div id="result" class="hidden">
+            <a 
+              id="download" 
+              class="flex items-center gap-2 text-blue-300 hover:text-blue-200 transition-colors font-mono"
+            >
+              <i class="fas fa-download"></i>
+              <span>Download Results (CSV)</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info Card -->
+      <div class="mt-8 border border-blue-500/30 rounded-lg p-6 bg-blue-900/10">
+        <h2 class="font-mono text-blue-200 mb-4 blueprint-text">Usage Instructions</h2>
+        <ul class="space-y-2 text-blue-300">
+          <li>• Enter a location or specific property criteria in the search field</li>
+          <li>• Enable "Get All Pages" to scrape beyond the first page of results</li>
+          <li>• Click "Start Scraping" and wait for the process to complete</li>
+          <li>• Download your results in CSV format when ready</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.blueprint-grid {
+    background-image: linear-gradient(#1e40af1a 1px, transparent 1px),
+        linear-gradient(90deg, #1e40af1a 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+.blueprint-text {
+    text-shadow: 0 0 3px #93c5fd;
+}
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
+<script>
+document
+  .getElementById("zillow-form")
+  .addEventListener("submit", async function (event) {
+    event.preventDefault();
+    const formData = new FormData(this);
+    const loading = document.getElementById("loading");
+    
+    loading.classList.remove("hidden");
+    
+    try {
+      const response = await fetch(this.action, {
+        method: "POST",
+        body: formData,
+      });
+      
+      const data = await response.json();
+      
+      // Convert JSON to CSV
+      const csvRows = [];
+      const headers = Object.keys(data[0]);
+      csvRows.push(headers.join(','));
+      
+      data.forEach(row => {
+        const values = headers.map(header => `"${row[header]}"`);
+        csvRows.push(values.join(','));
+      });
+      
+      const csvContent = csvRows.join('\n');
+      const blob = new Blob([csvContent], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      
+      const result = document.getElementById('result');
+      result.classList.remove('hidden');
+      
+      const a = document.getElementById('download');
+      a.setAttribute('href', url);
+      a.setAttribute('download', `zillow_data_${document.getElementById('query').value}.csv`);
+    } catch (error) {
+      console.error('Error:', error);
+      alert('An error occurred while fetching the data. Please try again.');
+    } finally {
+      loading.classList.add("hidden");
+    }
+  });
+</script>
+{% endblock %}

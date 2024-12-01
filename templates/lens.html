@@ -1,0 +1,360 @@
+{% extends 'base.html' %} {% block content %}
+<div class="min-h-screen bg-blue-950 blueprint-grid py-20">
+  <div class="container mx-auto px-4">
+    <div class="max-w-2xl mx-auto">
+      <!-- Header -->
+      <h1
+        class="text-4xl font-mono mb-8 blueprint-text text-blue-200 text-center"
+      >
+        Text Extractor
+      </h1>
+
+      <!-- Main Form Card -->
+      <div
+        class="border border-blue-500/30 rounded-lg p-8 bg-blue-900/20 backdrop-blur-sm"
+      >
+        <!-- Alert -->
+        <div
+          id="alert"
+          class="hidden bg-red-900/50 border border-red-400 text-red-200 px-4 py-3 rounded-lg mb-4"
+          role="alert"
+        >
+          <span class="block sm:inline" id="alertMessage"></span>
+        </div>
+
+        <!-- Loading Indicator -->
+        <div id="loading" class="flex justify-end hidden">
+          <span class="relative flex h-3 w-3">
+            <span
+              class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"
+            ></span>
+            <span
+              class="relative inline-flex rounded-full h-3 w-3 bg-blue-500"
+            ></span>
+          </span>
+        </div>
+
+        <!-- Form -->
+        <form
+          id="uploadForm"
+          action="{% url 'extract-text' %}"
+          method="POST"
+          enctype="multipart/form-data"
+          class="space-y-6"
+        >
+          <!-- File Input -->
+          <div>
+            <label for="file" class="block font-mono text-blue-200 mb-2"
+              >Image File:</label
+            >
+            <input
+              type="file"
+              id="file"
+              name="image"
+              accept="image/*"
+              required
+              class="w-full bg-blue-900/20 border border-blue-500/30 rounded p-3 text-blue-100 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-mono file:bg-blue-500 file:text-blue-50 hover:file:bg-blue-600 focus:border-blue-400 focus:outline-none transition-colors"
+            />
+          </div>
+
+          <!-- Regex Input -->
+          <div>
+            <label for="regex" class="block font-mono text-blue-200 mb-2"
+              >Regex Pattern:</label
+            >
+            <input
+              type="text"
+              id="regex"
+              name="regex"
+              placeholder="SN[:\s]*([^\s]+)"
+              class="w-full bg-blue-900/20 border border-blue-500/30 rounded p-3 text-blue-100 placeholder-blue-300/50 focus:border-blue-400 focus:outline-none transition-colors font-mono"
+            />
+          </div>
+
+          <!-- Submit Button -->
+          <div class="flex justify-center">
+            <button
+              type="submit"
+              class="px-6 py-3 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors font-mono focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-blue-900"
+            >
+              Process Image
+            </button>
+          </div>
+        </form>
+
+        <!-- Result -->
+        <div id="result" class="mt-6 hidden">
+          <label for="resultText" class="block font-mono text-blue-200 mb-2"
+            >Extracted Results:</label
+          >
+          <textarea
+            id="resultText"
+            readonly
+            class="w-full h-32 bg-blue-900/20 border border-blue-500/30 rounded p-3 text-blue-100 focus:border-blue-400 focus:outline-none transition-colors font-mono resize-none"
+          ></textarea>
+        </div>
+      </div>
+
+      <!-- Info Card -->
+      <div class="mt-8 border border-blue-500/30 rounded-lg p-6 bg-blue-900/10">
+        <h2 class="font-mono text-blue-200 mb-4 blueprint-text">
+          Usage Instructions
+        </h2>
+        <ul class="space-y-2 text-blue-300">
+          <li>• Upload a JPG image file containing text</li>
+          <li>
+            • Customize the regex pattern to match your desired text format
+          </li>
+          <li>• Click "Process Image" to extract the text</li>
+          <li>• View the extracted results in the text area below</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .blueprint-grid {
+    background-image: linear-gradient(#1e40af1a 1px, transparent 1px),
+      linear-gradient(90deg, #1e40af1a 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+  .blueprint-text {
+    text-shadow: 0 0 3px #93c5fd;
+  }
+  .fade-out {
+    transition: opacity 1s ease-out;
+    opacity: 0;
+  }
+</style>
+{% endblock %} {% block scripts %}
+<script>
+  // Constants for DOM elements and configuration
+  const CONFIG = {
+    alertDuration: 5000,
+    fadeOutDuration: 1000,
+    validFileTypes: ["image/jpeg", "image/jpg", "image/png", "image/gif", "image/bmp", "image/webp"],
+    maxFileSize: 5 * 1024 * 1024, // 5MB
+    endpoints: {
+      extract: null, // Will be set from form action
+    },
+  };
+
+  // Utility functions
+  const utils = {
+    formatBytes: (bytes, decimals = 2) => {
+      if (bytes === 0) return "0 Bytes";
+      const k = 1024;
+      const dm = decimals < 0 ? 0 : decimals;
+      const sizes = ["Bytes", "KB", "MB", "GB"];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
+    },
+
+    validateFile: (file) => {
+      if (!file) {
+        throw new Error("Please select a file.");
+      }
+      if (!CONFIG.validFileTypes.includes(file.type)) {
+        throw new Error("Please upload a valid JPG file.");
+      }
+      if (file.size > CONFIG.maxFileSize) {
+        throw new Error(
+          `File size must be less than ${utils.formatBytes(CONFIG.maxFileSize)}`
+        );
+      }
+      return true;
+    },
+
+    validateRegex: (pattern) => {
+      try {
+        new RegExp(pattern);
+        return true;
+      } catch (e) {
+        throw new Error("Invalid regex pattern.");
+      }
+    },
+
+    copyToClipboard: async (text) => {
+      try {
+        await navigator.clipboard.writeText(text);
+        return true;
+      } catch (err) {
+        console.error("Failed to copy:", err);
+        return false;
+      }
+    },
+  };
+
+  // UI Controller
+  const UIController = {
+    elements: {
+      form: null,
+      fileInput: null,
+      regexInput: null,
+      loading: null,
+      alert: null,
+      alertMessage: null,
+      result: null,
+      resultText: null,
+      copyButton: null,
+    },
+
+    initialize() {
+      // Initialize DOM elements
+      this.elements = {
+        form: document.getElementById("uploadForm"),
+        fileInput: document.getElementById("file"),
+        regexInput: document.getElementById("regex"),
+        loading: document.getElementById("loading"),
+        alert: document.getElementById("alert"),
+        alertMessage: document.getElementById("alertMessage"),
+        result: document.getElementById("result"),
+        resultText: document.getElementById("resultText"),
+      };
+
+      // Add copy button to results
+      this.addCopyButton();
+
+      // Set endpoint from form action
+      CONFIG.endpoints.extract = this.elements.form.action;
+
+      // Initialize event listeners
+      this.initializeEventListeners();
+    },
+
+    addCopyButton() {
+      const copyButton = document.createElement("button");
+      copyButton.className =
+        "mt-2 px-3 py-1 bg-blue-500/20 hover:bg-blue-500/30 text-blue-200 rounded text-sm font-mono transition-colors";
+      copyButton.innerHTML = "Copy to Clipboard";
+      copyButton.style.display = "none";
+      this.elements.copyButton = copyButton;
+      this.elements.result.appendChild(copyButton);
+    },
+
+    initializeEventListeners() {
+      // File input change handler
+      this.elements.fileInput.addEventListener("change", (e) => {
+        try {
+          utils.validateFile(e.target.files[0]);
+        } catch (error) {
+          this.showAlert(error.message);
+          e.target.value = "";
+        }
+      });
+
+      // Regex input validation
+      this.elements.regexInput.addEventListener("change", (e) => {
+        try {
+          utils.validateRegex(e.target.value);
+        } catch (error) {
+          this.showAlert(error.message);
+          e.target.value = "";
+        }
+      });
+
+      // Copy button handler
+      this.elements.copyButton.addEventListener("click", async () => {
+        const success = await utils.copyToClipboard(
+          this.elements.resultText.value
+        );
+        if (success) {
+          const originalText = this.elements.copyButton.innerHTML;
+          this.elements.copyButton.innerHTML = "Copied!";
+          setTimeout(() => {
+            this.elements.copyButton.innerHTML = originalText;
+          }, 2000);
+        } else {
+          this.showAlert("Failed to copy to clipboard");
+        }
+      });
+    },
+
+    showLoading(show = true) {
+      this.elements.loading.classList.toggle("hidden", !show);
+    },
+
+    showAlert(message, duration = CONFIG.alertDuration) {
+      this.elements.alertMessage.textContent = message;
+      this.elements.alert.classList.remove("hidden", "fade-out");
+
+      setTimeout(() => {
+        this.elements.alert.classList.add("fade-out");
+        setTimeout(() => {
+          this.elements.alert.classList.add("hidden");
+        }, CONFIG.fadeOutDuration);
+      }, duration);
+    },
+
+    showResult(text) {
+      this.elements.resultText.value = text;
+      this.elements.result.classList.remove("hidden");
+      this.elements.copyButton.style.display = "block";
+    },
+
+    clearResult() {
+      this.elements.resultText.value = "";
+      this.elements.result.classList.add("hidden");
+      this.elements.copyButton.style.display = "none";
+    },
+  };
+
+  // Main controller
+  const MainController = {
+    async initialize() {
+      UIController.initialize();
+      this.handleFormSubmission();
+    },
+
+    handleFormSubmission() {
+      UIController.elements.form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        UIController.clearResult();
+
+        try {
+          const formData = new FormData(UIController.elements.form);
+          const file = UIController.elements.fileInput.files[0];
+          const regex = UIController.elements.regexInput.value;
+
+          // Validate inputs
+          utils.validateFile(file);
+          utils.validateRegex(regex);
+
+          // Show loading state
+          UIController.showLoading(true);
+
+          // Send request
+          const response = await fetch(CONFIG.endpoints.extract, {
+            method: "POST",
+            body: formData,
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+
+          const result = await response.json();
+
+          if (result.error) {
+            throw new Error(result.error);
+          }
+
+          // Show results
+          UIController.showResult(result.extracted_text);
+        } catch (error) {
+          UIController.showAlert(error.message);
+          console.error("Error:", error);
+        } finally {
+          UIController.showLoading(false);
+        }
+      });
+    },
+  };
+
+  // Initialize the application
+  document.addEventListener("DOMContentLoaded", () => {
+    MainController.initialize();
+  });
+</script>
+{% endblock %}
