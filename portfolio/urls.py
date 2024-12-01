@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from app.views import extract_text, lens_view,contact, get_zillow_data, zillow_view, portfolio_view
+from django.shortcuts import redirect
 
 
 urlpatterns = [
@@ -27,5 +28,7 @@ urlpatterns = [
     path('zillow/', zillow_view,name='zillow'),
     path('api/text/', extract_text, name='extract-text'),
     path('api/zillow/', get_zillow_data, name='get-zillow-data'),
+    path('', lambda request: redirect('portfolio', permanent=False)),
+
 
 ]
