@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from app.views import extract_text, lens_view,contact, get_zillow_data, zillow_view, portfolio_view
+from app.views import extract_text, lens_view,contact, get_zillow_data, zillow_view, portfolio_view,aboutme_view
 from django.shortcuts import redirect
 
 
@@ -25,6 +25,8 @@ urlpatterns = [
     path('portfolio/', portfolio_view,name='portfolio'),
     path('contact/', contact, name='contact'),
     path('lens/', lens_view,name='lens'),
+    path('aboutme/', aboutme_view,name='aboutme'),
+
     path('zillow/', zillow_view,name='zillow'),
     path('api/text/', extract_text, name='extract-text'),
     path('api/zillow/', get_zillow_data, name='get-zillow-data'),

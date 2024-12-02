@@ -44,6 +44,8 @@ def zillow_view(request):
 
 def portfolio_view(request):
     return render(request, 'portfolio.html')
+def aboutme_view(request):
+    return render(request, 'aboutme.html')
 
 @csrf_exempt
 def get_zillow_data(request): 

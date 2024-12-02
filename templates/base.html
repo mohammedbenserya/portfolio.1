@@ -21,8 +21,9 @@
   </head>
   <body class="bg-blue-950 text-blue-200 min-h-screen blueprint-grid">
     {% url 'portfolio' as portfolio_url %}
+    {% url 'aboutme' as aboutme %}
 
-    {% if request.path != portfolio_url %}
+    {% if request.path != portfolio_url  and request.path != aboutme %}
       {% include 'navbar.html' %}
     {% endif %}
     <!-- <div
@@ -31,7 +32,7 @@
       {% block content %}{% endblock %}
     <!-- </div> -->
     {% block cdn %}{% endblock %}
-    {% if request.path != portfolio_url %}
+    {% if request.path != portfolio_url and request.path != aboutme %}
     <footer class="mt-12 border-t border-blue-500/30 pt-6">
       <div class="text-center">
         <p class="font-mono text-blue-200 mb-4 blueprint-text">Contact Developer</p>
