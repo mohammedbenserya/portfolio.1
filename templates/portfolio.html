@@ -239,7 +239,7 @@
           <i class="fab fa-amazon text-6xl text-blue-400"></i>
         </div>
         <h3 class="text-xl font-mono mb-2 blueprint-text">
-          Amazon Product Scraper
+          Amazon {% trans_req_tag " Product Scraper" request.GET.lang %}
         </h3>
         <p class="text-blue-300 mb-4">
           {% trans_req_tag "Automated data extraction tool for Amazon products. Features real-time pricing, review analysis, and competitive monitoring capabilities." request.GET.lang %}
@@ -274,7 +274,7 @@
           <i class="fas fa-home text-6xl text-blue-400"></i>
         </div>
         <h3 class="text-xl font-mono mb-2 blueprint-text">
-          Zillow Market Analyzer
+          Zillow {% trans_req_tag " Market Analyzer" request.GET.lang %}
         </h3>
         <p class="text-blue-300 mb-4">
           {% trans_req_tag "Real estate data extraction system with market analysis, price trending, and automated property notifications. `This project does not use Selenium.`" request.GET.lang %}
@@ -309,12 +309,10 @@
           <i class="fas fa-camera text-6xl text-blue-400"></i>
         </div>
         <h3 class="text-xl font-mono mb-2 blueprint-text">
-          Google Lens Automation
+          Google Lens {% trans_req_tag " Automation" request.GET.lang %}
         </h3>
         <p class="text-blue-300 mb-4">
-          {% trans_req_tag "Automated visual search and analysis tool leveraging Google Lens API
-          for image recognition and data extraction. This project utilizes
-          google lens api directly." request.GET.lang %}
+          {% trans_req_tag "Automated visual search and analysis tool leveraging Google Lens API for image recognition and data extraction. This project utilizes google lens api directly." request.GET.lang %}
           
         </p>
         <div class="flex gap-2 mb-4 flex-wrap">
@@ -342,12 +340,12 @@
 <!-- Services Section -->
 <section id="about" class="py-20 bg-blue-900/20">
   <div class="container mx-auto px-6">
-    <h2 class="text-4xl font-mono mb-12 blueprint-text">Services</h2>
+    <h2 class="text-4xl font-mono mb-12 blueprint-text">{% trans_req_tag "Services" request.GET.lang %}</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       <div class="p-6">
         <i class="fas fa-robot text-4xl text-blue-400 mb-4"></i>
         <h3 class="text-xl font-mono mb-2 blueprint-text">
-          Custom Web Scrapers
+            {% trans_req_tag "Custom Web Scrapers" request.GET.lang %}
         </h3>
         <p class="text-blue-300">
           {% trans_req_tag "Tailored scraping solutions for any website with robust error handling and proxy rotation." request.GET.lang %}
@@ -365,7 +363,9 @@
       </div>
       <div class="p-6">
         <i class="fas fa-database text-4xl text-blue-400 mb-4"></i>
-        <h3 class="text-xl font-mono mb-2 blueprint-text">Data Processing</h3>
+        <h3 class="text-xl font-mono mb-2 blueprint-text">
+          {% trans_req_tag "Data Processing" request.GET.lang %}
+        </h3>
         <p class="text-blue-300">
           {% trans_req_tag "Advanced data cleaning, transformation, and analysis pipelines." request.GET.lang %}
         </p>
