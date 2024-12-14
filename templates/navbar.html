@@ -33,7 +33,7 @@
     </div>
   </div>
   <!-- Mobile Menu -->
-  <div id="nav-content" class="hidden md:hidden">
+  <div id="nav-content" class="hidden md:hidden w-fit">
       <div class="px-6 py-4 font-mono space-y-2">
         <a href="{{ portfolio_url }}" 
            class="block hover:text-blue-300 transition-colors {% if request.path == portfolio_url %}text-blue-400 border-b-2 border-blue-400{% endif %}">
@@ -47,6 +47,7 @@
            class="block hover:text-blue-300 transition-colors {% if request.path == zillow_url %}text-blue-400 border-b-2 border-blue-400{% endif %}">
            {% trans_req_tag "Zillow" request.GET.lang %}
         </a>
+        {% include 'lang.html' %}
       </div>
     </div>
 </nav>
