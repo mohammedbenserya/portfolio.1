@@ -149,7 +149,7 @@
         
       </a>
       <a
-        href="#aboutme"
+        href="{% url 'aboutme' %}?lang={{ request.GET.lang|default:'en' }}"
         @click="mobileMenuOpen = false"
         class="text-blue-200 hover:bg-blue-900/50 block px-3 py-2 rounded-md text-base font-medium"
       >

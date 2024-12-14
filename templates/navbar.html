@@ -35,15 +35,15 @@
   <!-- Mobile Menu -->
   <div id="nav-content" class="hidden md:hidden w-fit">
       <div class="px-6 py-4 font-mono space-y-2">
-        <a href="{{ portfolio_url }}" 
+        <a href="{{ portfolio_url }}?lang={{ request.GET.lang|default:'en' }}" 
            class="block hover:text-blue-300 transition-colors {% if request.path == portfolio_url %}text-blue-400 border-b-2 border-blue-400{% endif %}">
            {% trans_req_tag "Portfolio" request.GET.lang %}
         </a>
-        <a href="{{ lens_url }}"
+        <a href="{{ lens_url }}?lang={{ request.GET.lang|default:'en' }}"
            class="block hover:text-blue-300 transition-colors {% if request.path == lens_url %}text-blue-400 border-b-2 border-blue-400{% endif %}">
            {% trans_req_tag "Lens" request.GET.lang %}
         </a>
-        <a href="{{ zillow_url }}"
+        <a href="{{ zillow_url }}?lang={{ request.GET.lang|default:'en' }}"
            class="block hover:text-blue-300 transition-colors {% if request.path == zillow_url %}text-blue-400 border-b-2 border-blue-400{% endif %}">
            {% trans_req_tag "Zillow" request.GET.lang %}
         </a>
