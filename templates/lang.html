@@ -16,6 +16,7 @@
         onchange="window.location.href=this.value;"
       >
         <!-- <option value="?lang=ar" {% if request.GET.lang|default:'en' == 'ar' %}selected{% endif %} class="bg-[#0f172a]">AR</option> -->
+        <option value="?lang=ber" {% if request.GET.lang|default:'en' == 'ber' %}selected{% endif %} class="bg-[#0f172a]">ⵣ</option>
         <option value="?lang=en" {% if request.GET.lang|default:'en' == 'en' %}selected{% endif %} class="bg-[#0f172a]">EN</option>
         <option value="?lang=fr" {% if request.GET.lang|default:'en' == 'fr' %}selected{% endif %} class="bg-[#0f172a]">FR</option>
         <option value="?lang=de" {% if request.GET.lang|default:'en' == 'de' %}selected{% endif %} class="bg-[#0f172a]">DE</option>
