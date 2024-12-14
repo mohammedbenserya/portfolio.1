@@ -1,8 +1,9 @@
 {% extends 'base.html' %} 
+{% load utils_tags %}
 {% block styles %} 
 {% endblock styles %} 
 {% block title %}
- Portfolio - Blueprint Style 
+ {% trans_req_tag "Portfolio" request.GET.lang %}
 {% endblock title %} 
 {% block content %}
 <!-- Navigation -->
@@ -23,28 +24,35 @@
       </div>
 
       <!-- Desktop Navigation -->
+             <!-- Language Options -->
+
       <div
         class="hidden md:flex md:items-center md:space-x-4 lg:space-x-6 font-mono"
       >
         <a
           href="#projects"
           class="text-blue-200 hover:text-blue-300 transition-colors"
-          >Projects</a
+          >         {% trans_req_tag "Projects" request.GET.lang %}
+
+          </a
         >
         <a
           href="#about"
           class="text-blue-200 hover:text-blue-300 transition-colors"
-          >Services</a
+          >                 {% trans_req_tag "Services" request.GET.lang %}
+          </a
         >
         <a
           href="#contact"
           class="text-blue-200 hover:text-blue-300 transition-colors"
-          >Contact</a
+          >{% trans_req_tag "Contact" request.GET.lang %}
+          </a
         >
         <a
-          href="{% url 'aboutme' %}"
+            href="{% url 'aboutme' %}?lang={{ request.GET.lang|default:'en' }}"
           class="text-blue-200 hover:text-blue-300 transition-colors"
-          >About Me</a
+          >{% trans_req_tag "About Me" request.GET.lang %}
+          </a
         >
         <a
           href="https://github.com/mohammedbenserya"
@@ -55,6 +63,7 @@
           <i class="fab fa-github"></i>
           <span>GitHub</span>
         </a>
+        {% include 'lang.html' %}
       </div>
 
       <!-- Mobile Menu Toggle -->
@@ -66,7 +75,7 @@
           aria-expanded="false"
           x-bind:aria-expanded="mobileMenuOpen.toString()"
         >
-          <span class="sr-only">Open main menu</span>
+          <span class="sr-only"> {% trans_req_tag "Open main menu" request.GET.lang %}</span>
           <!-- Icon when menu is closed -->
           <svg
             x-show="!mobileMenuOpen"
@@ -123,28 +132,30 @@
         @click="mobileMenuOpen = false"
         class="text-blue-200 hover:bg-blue-900/50 block px-3 py-2 rounded-md text-base font-medium"
       >
-        Projects
+      {% trans_req_tag "Projects" request.GET.lang %}
+        
       </a>
       <a
         href="#about"
         @click="mobileMenuOpen = false"
         class="text-blue-200 hover:bg-blue-900/50 block px-3 py-2 rounded-md text-base font-medium"
       >
-        Services
+      {% trans_req_tag "Services" request.GET.lang %}
       </a>
       <a
         href="#contact"
         @click="mobileMenuOpen = false"
         class="text-blue-200 hover:bg-blue-900/50 block px-3 py-2 rounded-md text-base font-medium"
       >
-        Contact
+      {% trans_req_tag "Contact" request.GET.lang %}
+        
       </a>
       <a
         href="#aboutme"
         @click="mobileMenuOpen = false"
         class="text-blue-200 hover:bg-blue-900/50 block px-3 py-2 rounded-md text-base font-medium"
       >
-        About Me
+      {% trans_req_tag "About Me" request.GET.lang %}
       </a>
       <a
         href="https://github.com/mohammedbenserya"
@@ -167,8 +178,10 @@
   <p
     class="text-{% if message.tags == 'success' %}green{% elif message.tags == 'error' %}red{% endif %}-200"
   >
-    {{ message }} {% if message.tags == 'success' %} Thanks for reaching out! We
-    will contact you shortly. {% endif %}
+    {{ message }} {% if message.tags == 'success' %} 
+       {% trans_req_tag "Thanks for reaching out! We
+    will contact you shortly." request.GET.lang %}
+    {% endif %}
   </p>
 </div>
 {% endfor %} {% endif %}
@@ -178,25 +191,29 @@
   <div class="container mx-auto px-6 pt-20">
     <div class="max-w-3xl">
       <h1 class="text-6xl font-bold mb-6 font-mono blueprint-text">
-        Web Scraping & Automation Solutions
+        {% trans_req_tag "Web Scraping & Automation Solutions" request.GET.lang %}
       </h1>
       <p class="text-xl mb-8 text-blue-300">
-        Transforming data collection and business processes through intelligent
-        automation. Specialized in building robust web scrapers and automated
-        workflows for modern businesses.
+
+        {% trans_req_tag "Transforming data collection and business processes through intelligent automation. Specialized in building robust web scrapers and automated workflows for modern businesses." request.GET.lang %}
+
       </p>
       <div class="flex space-x-4">
         <a
           href="#projects"
           class="px-6 py-3 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors font-mono"
         >
-          View Projects
+        {% trans_req_tag "View Projects" request.GET.lang %}
+
+          
         </a>
         <a
           href="#contact"
           class="px-6 py-3 border border-blue-500 rounded hover:bg-blue-900/50 transition-colors font-mono"
         >
-          Request Custom Solution
+        {% trans_req_tag "Request Custom Solution" request.GET.lang %}
+
+          
         </a>
       </div>
     </div>
@@ -208,7 +225,8 @@
 <!-- Projects Section with updated cards -->
 <section id="projects" class="py-20">
   <div class="container mx-auto px-6">
-    <h2 class="text-4xl font-mono mb-12 blueprint-text">Featured Projects</h2>
+    <h2 class="text-4xl font-mono mb-12 blueprint-text">{% trans_req_tag "Featured Projects" request.GET.lang %}</h2>
+
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       <!-- Amazon Scraper -->
       <div
@@ -223,8 +241,7 @@
           Amazon Product Scraper
         </h3>
         <p class="text-blue-300 mb-4">
-          Automated data extraction tool for Amazon products. Features real-time
-          pricing, review analysis, and competitive monitoring capabilities.
+          {% trans_req_tag "Automated data extraction tool for Amazon products. Features real-time pricing, review analysis, and competitive monitoring capabilities." request.GET.lang %}
         </p>
         <div class="flex gap-2 mb-4 flex-wrap">
           <span class="text-xs bg-blue-900/50 px-2 py-1 rounded">Python</span>
@@ -233,17 +250,17 @@
           >
         </div>
         <div class="flex gap-4 justify-between">
-          <a
+            <a
             href="https://github.com/mohammedbenserya/AmazonScraper"
             class="text-blue-400 hover:text-blue-300 font-mono"
             target="_blank"
-            >View Project →</a
-          >
-          <a
+            >{% trans_req_tag "View Project →" request.GET.lang %}</a
+            >
+            <a
             href="#"
             class="px-3 py-1 border border-blue-400 rounded hover:bg-blue-400 hover:text-blue-950 transition-colors text-sm"
-            >Test Project</a
-          >
+            >{% trans_req_tag "Test the Project" request.GET.lang %}</a
+            >
         </div>
       </div>
       <!-- Zillow Scraper -->
@@ -259,9 +276,7 @@
           Zillow Market Analyzer
         </h3>
         <p class="text-blue-300 mb-4">
-          Real estate data extraction system with market analysis, price
-          trending, and automated property notifications. This project does not
-          use Selenium.
+          {% trans_req_tag "Real estate data extraction system with market analysis, price trending, and automated property notifications. `This project does not use Selenium.`" request.GET.lang %}
         </p>
         <div class="flex gap-2 mb-4 flex-wrap">
           <span class="text-xs bg-blue-900/50 px-2 py-1 rounded">Python</span>
@@ -272,14 +287,14 @@
         </div>
         <div class="flex gap-4 justify-between">
           <span class="text-blue-400 hover:text-blue-300 font-mono line-through"
-            >View Project →</span
+            >{% trans_req_tag "View Project" request.GET.lang %}  →</span
           >
 
           <a
-            href="{% url 'zillow' %}"
+            href="{% url 'zillow' %}?lang={{ request.GET.lang|default:'en' }}"
             target="_blank"
             class="px-3 py-1 border border-blue-400 rounded hover:bg-blue-400 hover:text-blue-950 transition-colors text-sm"
-            >Test Project</a
+            > {% trans_req_tag "Test the Project" request.GET.lang %}</a
           >
         </div>
       </div>
@@ -296,9 +311,10 @@
           Google Lens Automation
         </h3>
         <p class="text-blue-300 mb-4">
-          Automated visual search and analysis tool leveraging Google Lens API
+          {% trans_req_tag "Automated visual search and analysis tool leveraging Google Lens API
           for image recognition and data extraction. This project utilizes
-          google lens api directly.
+          google lens api directly." request.GET.lang %}
+          
         </p>
         <div class="flex gap-2 mb-4 flex-wrap">
           <span class="text-xs bg-blue-900/50 px-2 py-1 rounded">Python</span>
@@ -308,13 +324,13 @@
         </div>
         <div class="flex gap-4 justify-between">
           <span class="text-blue-400 hover:text-blue-300 font-mono line-through"
-            >View Project →</span
+            >{% trans_req_tag "View Project" request.GET.lang %} →</span
           >
           <a
-            href="{% url 'lens' %}"
+            href="{% url 'lens' %}?lang={{ request.GET.lang|default:'en' }}"
             target="_blank"
             class="px-3 py-1 border border-blue-400 rounded hover:bg-blue-400 hover:text-blue-950 transition-colors text-sm"
-            >Test Project</a
+            >{% trans_req_tag "Test the Project" request.GET.lang %}</a
           >
         </div>
       </div>
@@ -333,25 +349,24 @@
           Custom Web Scrapers
         </h3>
         <p class="text-blue-300">
-          Tailored scraping solutions for any website with robust error handling
-          and proxy rotation.
+          {% trans_req_tag "Tailored scraping solutions for any website with robust error handling and proxy rotation." request.GET.lang %}
         </p>
       </div>
       <div class="p-6">
         <i class="fas fa-cogs text-4xl text-blue-400 mb-4"></i>
         <h3 class="text-xl font-mono mb-2 blueprint-text">
-          Process Automation
+          
+          {% trans_req_tag "Process Automation" request.GET.lang %}
         </h3>
         <p class="text-blue-300">
-          End-to-end automation solutions for business processes and data
-          workflows.
+          {% trans_req_tag "End-to-end automation solutions for business processes and data workflows." request.GET.lang %}
         </p>
       </div>
       <div class="p-6">
         <i class="fas fa-database text-4xl text-blue-400 mb-4"></i>
         <h3 class="text-xl font-mono mb-2 blueprint-text">Data Processing</h3>
         <p class="text-blue-300">
-          Advanced data cleaning, transformation, and analysis pipelines.
+          {% trans_req_tag "Advanced data cleaning, transformation, and analysis pipelines." request.GET.lang %}
         </p>
       </div>
     </div>
@@ -365,13 +380,14 @@
   <div class="container mx-auto px-6">
     <div class="max-w-2xl mx-auto">
       <h2 class="text-4xl font-mono mb-12 blueprint-text">
-        Start Your Project
+        
+        {% trans_req_tag "Start Your Project" request.GET.lang %}
       </h2>
       <!-- Modified portfolio.html form -->
       <form method="POST" action="{% url 'contact' %}" class="space-y-6">
         {% csrf_token %}
         <div>
-          <label class="block font-mono mb-2">Name</label>
+          <label class="block font-mono mb-2"> {% trans_req_tag "Name" request.GET.lang %}</label>
           <input
             type="text"
             name="name"
@@ -380,7 +396,7 @@
           />
         </div>
         <div>
-          <label class="block font-mono mb-2">Email</label>
+          <label class="block font-mono mb-2">{% trans_req_tag "Email" request.GET.lang %}</label>
           <input
             type="email"
             name="email"
@@ -389,20 +405,21 @@
           />
         </div>
         <div>
-          <label class="block font-mono mb-2">Project Type</label>
+          <label class="block font-mono mb-2">{% trans_req_tag "Project Type " request.GET.lang %}</label>
           <select
             name="project_type"
             class="w-full bg-blue-900/20 border border-blue-500/30 rounded p-3 focus:border-blue-400 focus:outline-none"
           >
-            <option>Web Scraping</option>
-            <option>Process Automation</option>
-            <option>Data Processing</option>
-            <option>Custom Solution</option>
+            <option>{% trans_req_tag "Web Scraping" request.GET.lang %}</option>
+            <option>{% trans_req_tag "Process Automation" request.GET.lang %}</option>
+            <option>{% trans_req_tag "Data Processing" request.GET.lang %}</option>
+            <option>{% trans_req_tag "Custom Solution" request.GET.lang %}</option>
           </select>
         </div>
         <div>
-          <label class="block font-mono mb-2">Message</label>
+            <label for="message" class="block font-mono mb-2">{% trans_req_tag "Message" request.GET.lang %}</label>
           <textarea
+            id="message"
             name="message"
             required
             rows="4"
@@ -413,7 +430,7 @@
           type="submit"
           class="w-full bg-blue-500 hover:bg-blue-600 text-white font-mono py-3 px-6 rounded transition duration-200"
         >
-          Send Message
+          {% trans_req_tag "Send Message" request.GET.lang %}
         </button>
       </form>
     </div>
@@ -423,7 +440,8 @@
 <!-- Footer -->
 <footer class="mt-12 border-t border-blue-500/30 pt-6">
   <div class="text-center">
-    <p class="font-mono text-blue-200 mb-4 blueprint-text">Contact Developer</p>
+    <p class="font-mono text-blue-200 mb-4 blueprint-text">{% trans_req_tag "Contact Developer" request.GET.lang %}</p>
+
     <div class="flex justify-center space-x-6">
       <!-- GitHub -->
       <a
@@ -465,14 +483,14 @@
       </a>
     </div>
     <p class="mt-4 text-blue-300 text-sm font-mono">
-      Built with
-      <span class="text-blue-200">❤</span> by
+      {% trans_req_tag "Built with" request.GET.lang %}
+      <span class="text-blue-200">❤</span> {% trans_req_tag "by" request.GET.lang %}
       <a href="#" class="text-blue-200 hover:text-blue-100 transition-colors"
-        >BENSERYA</a
+      >BENSERYA</a
       >
     </p>
     <p class="mt-2 text-blue-400/60 text-xs font-mono">
-      © 2024 All rights reserved
+      © 2024 {% trans_req_tag "All rights reserved" request.GET.lang %}
     </p>
   </div>
 </footer>
@@ -486,8 +504,8 @@
   document.addEventListener("DOMContentLoaded", () => {
     const introAnimation = document.getElementById("intro-animation");
     const dynamicText = document.getElementById("dynamic-text");
-    const fullText = "AUTOMATION EXPERT | BENSERYA MOHAMED";
-    const shortText = "AUTOMATION EXPERT";
+    const fullText = "{% trans_req_tag 'AUTOMATION EXPERT' request.GET.lang %} | BENSERYA MOHAMED";
+    const shortText = "{% trans_req_tag 'AUTOMATION EXPERT' request.GET.lang %}";
     const deleteDelay = 50;
     const typeDelay = 100;
 

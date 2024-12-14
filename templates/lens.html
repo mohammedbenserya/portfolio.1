@@ -1,4 +1,8 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %}
+{% load utils_tags %}
+{% block title %}Google Lens {% trans_req_tag "Data Scraper" request.GET.lang%}{% endblock %}
+
+{% block content %}
 <div class="min-h-screen bg-blue-950 blueprint-grid py-20">
   <div class="container mx-auto px-4">
     <div class="max-w-2xl mx-auto">
@@ -6,7 +10,7 @@
       <h1
         class="text-4xl font-mono mb-8 blueprint-text text-blue-200 text-center"
       >
-        Text Extractor
+        {% trans_req_tag "Text Extractor" request.GET.lang %}
       </h1>
 
       <!-- Main Form Card -->
@@ -44,9 +48,9 @@
         >
           <!-- File Input -->
           <div>
-            <label for="file" class="block font-mono text-blue-200 mb-2"
-              >Image File:</label
-            >
+            <label for="file" class="block font-mono text-blue-200 mb-2">
+              {% trans_req_tag "Image File:" request.GET.lang %}
+            </label>
             <input
               type="file"
               id="file"
@@ -56,59 +60,56 @@
               class="w-full bg-blue-900/20 border border-blue-500/30 rounded p-3 text-blue-100 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-mono file:bg-blue-500 file:text-blue-50 hover:file:bg-blue-600 focus:border-blue-400 focus:outline-none transition-colors"
             />
           </div>
-
+        
           <!-- Regex Input -->
           <div>
-            <label for="regex" class="block font-mono text-blue-200 mb-2"
-              >Regex Pattern:</label
-            >
+            <label for="regex" class="block font-mono text-blue-200 mb-2">
+              {% trans_req_tag "Regex Pattern:" request.GET.lang %}
+            </label>
             <input
               type="text"
               id="regex"
               name="regex"
-              placeholder="SN[:\s]*([^\s]+)"
+              placeholder="{% trans_req_tag 'SN[:\s]*([^\s]+)' request.GET.lang %}"
               class="w-full bg-blue-900/20 border border-blue-500/30 rounded p-3 text-blue-100 placeholder-blue-300/50 focus:border-blue-400 focus:outline-none transition-colors font-mono"
             />
           </div>
-
+        
           <!-- Submit Button -->
           <div class="flex justify-center">
             <button
               type="submit"
               class="px-6 py-3 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors font-mono focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-blue-900"
             >
-              Process Image
+              {% trans_req_tag "Process Image" request.GET.lang %}
             </button>
           </div>
         </form>
-
+        
         <!-- Result -->
         <div id="result" class="mt-6 hidden">
-          <label for="resultText" class="block font-mono text-blue-200 mb-2"
-            >Extracted Results:</label
-          >
+          <label for="resultText" class="block font-mono text-blue-200 mb-2">
+            {% trans_req_tag "Extracted Results:" request.GET.lang %}
+          </label>
           <textarea
             id="resultText"
             readonly
             class="w-full h-32 bg-blue-900/20 border border-blue-500/30 rounded p-3 text-blue-100 focus:border-blue-400 focus:outline-none transition-colors font-mono resize-none"
           ></textarea>
         </div>
-      </div>
-
-      <!-- Info Card -->
-      <div class="mt-8 border border-blue-500/30 rounded-lg p-6 bg-blue-900/10">
-        <h2 class="font-mono text-blue-200 mb-4 blueprint-text">
-          Usage Instructions
-        </h2>
-        <ul class="space-y-2 text-blue-300">
-          <li>• Upload a JPG image file containing text</li>
-          <li>
-            • Customize the regex pattern to match your desired text format
-          </li>
-          <li>• Click "Process Image" to extract the text</li>
-          <li>• View the extracted results in the text area below</li>
-        </ul>
-      </div>
+        
+        <!-- Info Card -->
+        <div class="mt-8 border border-blue-500/30 rounded-lg p-6 bg-blue-900/10">
+          <h2 class="font-mono text-blue-200 mb-4 blueprint-text">
+            {% trans_req_tag "Usage Instructions" request.GET.lang %}
+          </h2>
+          <ul class="space-y-2 text-blue-300">
+            <li>• {% trans_req_tag "Upload a JPG image file containing text" request.GET.lang %}</li>
+            <li>• {% trans_req_tag "Customize the regex pattern to match your desired text format" request.GET.lang %}</li>
+            <li>• {% trans_req_tag "Click \"Process Image\" to extract the text" request.GET.lang %}</li>
+            <li>• {% trans_req_tag "View the extracted results in the text area below" request.GET.lang %}</li>
+          </ul>
+        </div>
     </div>
   </div>
 </div>

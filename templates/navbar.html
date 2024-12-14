@@ -1,22 +1,27 @@
 {% url 'lens' as lens_url %}
 {% url 'zillow' as zillow_url %}
 {% url 'portfolio' as portfolio_url %}
+{% load utils_tags %}
 
 <nav class="border-b border-blue-500/30 backdrop-blur-sm fixed w-full z-10">
   <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-    <div class="text-2xl font-mono blueprint-text">Play Ground</div>
+    <div class="text-2xl font-mono blueprint-text">{% trans_req_tag "Play Ground" request.GET.lang %}</div>
     <div class="flex items-center font-mono">
       <!-- Desktop Menu -->
       <div class="hidden md:flex space-x-6">
-        <a href="{{ portfolio_url }}" 
+        <a href="{{ portfolio_url }}?lang={{ request.GET.lang|default:'en' }}" 
            class="hover:text-blue-300 transition-colors {% if request.path == portfolio_url %}text-blue-400 border-b-2 border-blue-400{% endif %}">
-           Portfolio</a>
-        <a href="{{ lens_url }}"
+           {% trans_req_tag "Portfolio" request.GET.lang %}
+        </a>
+        <a href="{{ lens_url }}?lang={{ request.GET.lang|default:'en' }}"
            class="hover:text-blue-300 transition-colors {% if request.path == lens_url %}text-blue-400 border-b-2 border-blue-400{% endif %}">
-           Lens</a>
-        <a href="{{ zillow_url }}"
+           Google Lens
+        </a>
+        <a href="{{ zillow_url }}?lang={{ request.GET.lang|default:'en' }}"
            class="hover:text-blue-300 transition-colors {% if request.path == zillow_url %}text-blue-400 border-b-2 border-blue-400{% endif %}">
-           Zillow</a>
+           Zillow
+        </a>
+        {% include 'lang.html' %}
       </div>
       <!-- Mobile Hamburger -->
       <button id="nav-toggle" class="md:hidden text-blue-500 focus:outline-none ml-4">
@@ -29,18 +34,21 @@
   </div>
   <!-- Mobile Menu -->
   <div id="nav-content" class="hidden md:hidden">
-    <div class="px-6 py-4 font-mono space-y-2">
-      <a href="{{ portfolio_url }}" 
-         class="block hover:text-blue-300 transition-colors {% if request.path == portfolio_url %}text-blue-400 border-b-2 border-blue-400{% endif %}">
-         Portfolio</a>
-      <a href="{{ lens_url }}"
-         class="block hover:text-blue-300 transition-colors {% if request.path == lens_url %}text-blue-400 border-b-2 border-blue-400{% endif %}">
-         Lens</a>
-      <a href="{{ zillow_url }}"
-         class="block hover:text-blue-300 transition-colors {% if request.path == zillow_url %}text-blue-400 border-b-2 border-blue-400{% endif %}">
-         Zillow</a>
+      <div class="px-6 py-4 font-mono space-y-2">
+        <a href="{{ portfolio_url }}" 
+           class="block hover:text-blue-300 transition-colors {% if request.path == portfolio_url %}text-blue-400 border-b-2 border-blue-400{% endif %}">
+           {% trans_req_tag "Portfolio" request.GET.lang %}
+        </a>
+        <a href="{{ lens_url }}"
+           class="block hover:text-blue-300 transition-colors {% if request.path == lens_url %}text-blue-400 border-b-2 border-blue-400{% endif %}">
+           {% trans_req_tag "Lens" request.GET.lang %}
+        </a>
+        <a href="{{ zillow_url }}"
+           class="block hover:text-blue-300 transition-colors {% if request.path == zillow_url %}text-blue-400 border-b-2 border-blue-400{% endif %}">
+           {% trans_req_tag "Zillow" request.GET.lang %}
+        </a>
+      </div>
     </div>
-  </div>
 </nav>
 
 <script>
