@@ -29,7 +29,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost','127.0.0.1','portfolio-1-q4md.onrender.com']
+ALLOWED_HOSTS = ['localhost','127.0.0.1','portfolio-1-q4md.onrender.com','www.benserya.dev']
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 

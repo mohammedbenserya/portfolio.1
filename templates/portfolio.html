@@ -2,9 +2,7 @@
 {% load utils_tags %}
 {% block styles %} 
 {% endblock styles %} 
-{% block title %}
- {% trans_req_tag "Portfolio" request.GET.lang %}
-{% endblock title %} 
+{% block title %}{% trans_req_tag "Portfolio" request.GET.lang %} - Mohamed BENSERYA{% endblock title %} 
 {% block content %}
 <!-- Navigation -->
 <nav
