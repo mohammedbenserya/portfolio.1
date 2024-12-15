@@ -10,7 +10,7 @@
       <!-- Desktop Menu -->
       <div class="hidden md:flex md:items-center md:space-x-4 lg:space-x-6">
         <a href="{{ portfolio_url }}?lang={{ request.GET.lang|default:'en' }}" 
-           class="hover:text-blue-300 transition-colors {% if request.path == portfolio_url %}text-blue-400 border-b-2 border-blue-400{% endif %}">
+           class="hover:text-blue-300 transition-colors rtl:ml-8 {% if request.path == portfolio_url %}text-blue-400 border-b-2 border-blue-400{% endif %}">
            {% trans_req_tag "Portfolio" request.GET.lang %}
         </a>
         <a href="{{ lens_url }}?lang={{ request.GET.lang|default:'en' }}"

@@ -29,7 +29,7 @@
       >
         <a
           href="#projects"
-          class="text-blue-200 hover:text-blue-300 transition-colors"
+          class="text-blue-200 hover:text-blue-300 transition-colors rtl:ml-6 "
           >         {% trans_req_tag "Projects" request.GET.lang %}
 
           </a
@@ -162,7 +162,7 @@
         @click="mobileMenuOpen = false"
         class="text-blue-200 hover:bg-blue-900/50 flex items-center px-3 py-2 rounded-md text-base font-medium"
       >
-        <i class="fab fa-github mr-2"></i>
+        <i class="fab fa-github ltr:mr-2 rtl:ml-2"></i>
         GitHub
       </a>
       
@@ -202,7 +202,7 @@
       <div class="flex space-x-4">
         <a
           href="#projects"
-          class="px-6 py-3 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors font-mono"
+          class="px-6 py-3 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors font-mono rtl:ml-12"
         >
         {% trans_req_tag "View Projects" request.GET.lang %}
 
@@ -447,7 +447,7 @@
       <!-- GitHub -->
       <a
         href="https://github.com/mohammedbenserya/"
-        class="text-blue-300 hover:text-blue-200 transition-colors"
+        class="text-blue-300 hover:text-blue-200 transition-colors rtl:ml-4"
         target="_blank"
         rel="noopener noreferrer"
       >
@@ -503,46 +503,48 @@
 ></script>
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-    const introAnimation = document.getElementById("intro-animation");
-    const dynamicText = document.getElementById("dynamic-text");
-    const fullText = "{% trans_req_tag 'AUTOMATION EXPERT' request.GET.lang %} | BENSERYA MOHAMED";
-    const shortText = "{% trans_req_tag 'AUTOMATION EXPERT' request.GET.lang %}";
-    const deleteDelay = 50;
-    const typeDelay = 100;
-
-    introAnimation.classList.remove("hidden");
-    if (window.innerWidth <= 768) {
-      // Mobile devices
-      dynamicText.textContent = shortText;
-    } else {
-      const typeText = async (text) => {
-        for (let i = 0; i < text.length; i++) {
-          dynamicText.textContent += text[i];
-          await new Promise((resolve) => setTimeout(resolve, typeDelay));
-        }
-      };
-
-      const runAnimation = async () => {
-        await typeText(fullText);
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-
-        while (dynamicText.textContent.length > shortText.length) {
-          dynamicText.textContent = dynamicText.textContent.slice(0, -1);
-          await new Promise((resolve) => setTimeout(resolve, deleteDelay));
-        }
-
-        // Add hover event after initial animation
-        introAnimation.addEventListener("mouseenter", () => {
-          dynamicText.textContent = fullText;
-        });
-
-        introAnimation.addEventListener("mouseleave", () => {
-          dynamicText.textContent = shortText;
-        });
-      };
-
-      runAnimation();
-    }
+      const introAnimation = document.getElementById("intro-animation");
+      const dynamicText = document.getElementById("dynamic-text");
+      const fullText = "{% trans_req_tag 'AUTOMATION EXPERT' request.GET.lang %} | BENSERYA MOHAMED";
+      const shortText = "{% trans_req_tag 'AUTOMATION EXPERT' request.GET.lang %}";
+      const deleteDelay = 50;
+      const typeDelay = 100;
+  
+      introAnimation.classList.remove("hidden");
+      if (window.innerWidth <= 768) {
+        // Mobile devices
+        dynamicText.textContent = shortText;
+      } else {
+        const typeText = async (text) => {
+          dynamicText.textContent = "";
+          for (let i = 0; i < text.length; i++) {
+            dynamicText.textContent += text[i];
+            await new Promise((resolve) => setTimeout(resolve, typeDelay));
+          }
+        };
+  
+        const runAnimation = async () => {
+          await typeText(fullText);
+          await new Promise((resolve) => setTimeout(resolve, 2000));
+  
+          while (dynamicText.textContent.length > shortText.length) {
+            dynamicText.textContent = dynamicText.textContent.slice(0, -1);
+            await new Promise((resolve) => setTimeout(resolve, deleteDelay));
+          }
+  
+          // Add hover event after initial animation
+          introAnimation.addEventListener("mouseenter", () => {
+            dynamicText.textContent = fullText;
+          });
+  
+          introAnimation.addEventListener("mouseleave", () => {
+            dynamicText.textContent = shortText;
+          });
+        };
+  
+        runAnimation();
+        setInterval(runAnimation, 10000);
+      }
   });
 
   // Auto-hide alert

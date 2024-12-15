@@ -1,6 +1,6 @@
     <div class="relative group w-fit">
       <select 
-        class="px-10 pr-4 py-2 w-24 
+        class="px-10 ltr:pr-4 rtl:pl-4 py-2 w-24 
                bg-[#0f172a] border-2 border-blue-500/30 
                text-blue-300 
                rounded-xl 
@@ -15,7 +15,7 @@
                text-sm"
         onchange="window.location.href=this.value;"
       >
-        <!-- <option value="?lang=ar" {% if request.GET.lang|default:'en' == 'ar' %}selected{% endif %} class="bg-[#0f172a]">AR</option> -->
+        <option value="?lang=ar" {% if request.GET.lang|default:'en' == 'ar' %}selected{% endif %} class="bg-[#0f172a] lateef-bold">ض</option>
         <option value="?lang=ber" {% if request.GET.lang|default:'en' == 'ber' %}selected{% endif %} class="bg-[#0f172a]">ⵣ</option>
         <option value="?lang=en" {% if request.GET.lang|default:'en' == 'en' %}selected{% endif %} class="bg-[#0f172a]">EN</option>
         <option value="?lang=fr" {% if request.GET.lang|default:'en' == 'fr' %}selected{% endif %} class="bg-[#0f172a]">FR</option>

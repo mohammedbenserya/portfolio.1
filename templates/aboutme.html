@@ -321,7 +321,7 @@
         </p>
         <div class="flex justify-center gap-4">
           <a
-            href="{% url 'portfolio' %}"
+            href="{% url 'portfolio' %}?lang={{ request.GET.lang|default:'en' }}"
             class="px-6 py-3 border border-blue-500 rounded hover:bg-blue-900/50 transition-colors font-mono inline-flex items-center gap-2"
           >
             <i class="fas fa-robot"></i>
