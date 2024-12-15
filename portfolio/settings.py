@@ -35,6 +35,35 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
+# ALLOWED TRANS LANGS
+# <option value="?lang=ar" {% if request.GET.lang|default:'en' == 'ar' %}selected{% endif %} class="bg-[#0f172a] lateef-bold">ض</option>
+#         <option value="?lang=ber" {% if request.GET.lang|default:'en' == 'ber' %}selected{% endif %} class="bg-[#0f172a]">ⵣ</option>
+#         <option value="?lang=en" {% if request.GET.lang|default:'en' == 'en' %}selected{% endif %} class="bg-[#0f172a]">EN</option>
+#         <option value="?lang=fr" {% if request.GET.lang|default:'en' == 'fr' %}selected{% endif %} class="bg-[#0f172a]">FR</option>
+#         <option value="?lang=de" {% if request.GET.lang|default:'en' == 'de' %}selected{% endif %} class="bg-[#0f172a]">DE</option>
+#         <option value="?lang=es" {% if request.GET.lang|default:'en' == 'es' %}selected{% endif %} class="bg-[#0f172a]">ES</option>
+#         <option value="?lang=it" {% if request.GET.lang|default:'en' == 'it' %}selected{% endif %} class="bg-[#0f172a]">IT</option>
+#         <option value="?lang=zh" {% if request.GET.lang|default:'en' == 'zh' %}selected{% endif %} class="bg-[#0f172a]">中文</option>
+#         <option value="?lang=hi" {% if request.GET.lang|default:'en' == 'hi' %}selected{% endif %} class="bg-[#0f172a]">हिंदी</option>
+#         <option value="?lang=ja" {% if request.GET.lang|default:'en' == 'ja' %}selected{% endif %} class="bg-[#0f172a]">日本語</option>
+#         <option value="?lang=ko" {% if request.GET.lang|default:'en' == 'ko' %}selected{% endif %} class="bg-[#0f172a]">한국어</option>
+#         <option value="?lang=pt" {% if request.GET.lang|default:'en' == 'pt' %}selected{% endif %} class="bg-[#0f172a]">PT</option>
+#         <option value="?lang=ru" {% if request.GET.lang|default:'en' == 'ru' %}selected{% endif %} class="bg-[#0f172a]">RU</option>
+
+ALLOWED_LANGS =[{ 'code':'ar','name':'ض'},
+                { 'code':'ber','name':'ⵣ'},
+                { 'code':'en','name':'EN'},
+                { 'code':'fr','name':'FR'},
+                { 'code':'de','name':'DE'},
+                { 'code':'es','name':'ES'},
+                { 'code':'it','name':'IT'},
+                { 'code':'zh','name':'中文'},
+                { 'code':'hi','name':'हिंदी'},
+                { 'code':'ja','name':'日本語'},
+                { 'code':'ko','name':'한국어'},
+                { 'code':'pt','name':'PT'},
+                { 'code':'ru','name':'RU'}
+                ]
 
 # Application definition
 

@@ -4,6 +4,7 @@ import asyncio
 import json
 from asgiref.sync import sync_to_async
 from app.models import Translation
+from app.models import Language
 
 @sync_to_async
 def get_translation(desc, lang_desc):
@@ -11,13 +12,28 @@ def get_translation(desc, lang_desc):
         return Translation.objects.get(text=desc, lang=lang_desc).result
     except Translation.DoesNotExist:
         return None
+    
+@sync_to_async
+def get_langs():
+    try:
+        # Convert queryset to list for better reusability
+        langs = list(Language.objects.all().values_list('code', flat=True))
+        return langs if langs else []
+    except (Language.DoesNotExist, Exception) as e:
+        # Log error if needed
+        # logger.error(f"Error fetching languages: {str(e)}")
+        return []
 
 @sync_to_async
 def save_translation(desc, lang_desc, result):
     Translation.objects.create(text=desc, lang=lang_desc, result=result)
 
 async def trans_req(desc: str, lang_desc: str) -> str:
+    
     if lang_desc == "en":
+        return desc
+    
+    if lang_desc not in await get_langs():
         return desc
     # Check database for existing translation
     db_result = await get_translation(desc, lang_desc)

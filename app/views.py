@@ -6,6 +6,7 @@ from .services.google_lens import upload_to_google_lens, parse_af_callback_data,
 from app.services.zillow import zillow_scraper
 import re,pandas as pd
 from django.shortcuts import redirect
+from app.models import Language
 
 @csrf_exempt
 def extract_text(request): 
@@ -37,15 +38,15 @@ def extract_text(request):
     
 from django.shortcuts import render
 def lens_view(request):
-    return render(request, 'lens.html')
+    return render(request, 'lens.html', {'ALLOWED_LANGS': Language.objects.all()})
 
 def zillow_view(request):
-    return render(request, 'zillow.html')
+    return render(request, 'zillow.html', {'ALLOWED_LANGS': Language.objects.all()})
 
 def portfolio_view(request):
-    return render(request, 'portfolio.html')
+    return render(request, 'portfolio.html', {'ALLOWED_LANGS': Language.objects.all()})
 def aboutme_view(request):
-    return render(request, 'aboutme.html')
+    return render(request, 'aboutme.html', {'ALLOWED_LANGS': Language.objects.all()})
 
 @csrf_exempt
 def get_zillow_data(request): 
