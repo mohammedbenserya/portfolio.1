@@ -1,0 +1,103 @@
+{% extends "admin/change_list.html" %}
+{% block extrahead %}
+{{ block.super }}
+<!-- Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Utility function to get CSRF token
+    const getCSRFToken = () => {
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
+        if (!csrfToken) {
+            console.error('CSRF token not found. Ensure it exists in the DOM.');
+        }
+        return csrfToken;
+    };
+
+    // Listen for clicks on the translate button
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('.custom-translate-btn')) {
+            const button = e.target.closest('.custom-translate-btn');
+
+            e.preventDefault();
+            button.style.display = 'none';
+
+            // Create and show spinner
+            const spinner = document.createElement('div');
+            spinner.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor" style="animation: spin 2s linear infinite; width:24px; height:24px;">
+                <path d="M304 48a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zm0 416a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM48 304a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm464-48a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM142.9 437A48 48 0 1 0 75 369.1 48 48 0 1 0 142.9 437zm0-294.2A48 48 0 1 0 75 75a48 48 0 1 0 67.9 67.9zM369.1 437A48 48 0 1 0 437 369.1 48 48 0 1 0 369.1 437z"/>
+            </svg>`;
+            // Add keyframes for spin
+            const style = document.createElement('style');
+            style.innerHTML = `
+                @keyframes spin {
+                    0% { transform: rotate(0deg); }
+                    100% { transform: rotate(360deg); }
+                }
+            `;
+            document.head.appendChild(style);
+    
+            button.parentElement.appendChild(spinner);
+    
+            const translationId = button.getAttribute('data-id');
+
+            const url = `{% url 'admin:translation_ai_translate' 'placeholder_id' %}`.replace('placeholder_id', translationId);
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCSRFToken(),
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'same-origin'
+            })
+            .then(response => response.json())
+            .then(data => {
+                spinner.remove(); // Remove spinner
+                // Display translated text and buttons
+                const buttonsDiv = document.getElementById(`confirm-cancel-buttons-${translationId}`);
+                buttonsDiv.style.display = 'block'; // Show the buttons
+                // update buttonsDiv parent sibling td that has class field-result with the translated text
+                const oldText = buttonsDiv.parentElement.previousElementSibling.textContent;
+                buttonsDiv.parentElement.previousElementSibling.textContent = data.translated_text;
+
+                // Handle Confirm button click
+                document.getElementById(`confirm-btn-${translationId}`).addEventListener('click', function () {
+                    event.preventDefault(); // Prevent page refresh
+
+                    fetch( `{% url 'admin:update_translation' 'placeholder_id' %}`.replace('placeholder_id', translationId), {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                            'Content-Type': 'application/json'
+                        },
+                        credentials: 'same-origin',
+                        body: JSON.stringify({ translation: data.translated_text })
+                    })
+                    .then(response => response.json())
+                    .then(updateData => {
+                        buttonsDiv.style.display = 'none'; // Hide the buttons after action
+                        button.style.display = 'block';
+
+                    });
+                });
+
+                // Handle Cancel button click
+                // Handle Cancel button click
+                document.getElementById(`cancel-btn-${translationId}`).addEventListener('click', function (event) {
+                    event.preventDefault(); // Prevent page refresh
+                    buttonsDiv.style.display = 'none'; // Hide the buttons
+                    buttonsDiv.parentElement.previousElementSibling.textContent = oldText;
+                    button.style.display = 'block';
+
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    });
+});
+</script>
+{% endblock %}
