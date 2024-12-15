@@ -2,12 +2,17 @@ from django.contrib import admin
 from django.urls import path
 from django.http import JsonResponse
 from django.utils.html import format_html
-from .models import Translation
+from .models import Translation,Language
+
 import openai,json
 import portfolio.settings as settings
 from django.views.decorators.csrf import csrf_exempt
-
 from traceback import print_exc
+
+@admin.register(Language)
+class LanguageAdmin(admin.ModelAdmin):
+    list_display = ('name', 'code')
+    search_fields = ('name', 'code')
 
 @admin.register(Translation)
 class TranslationAdmin(admin.ModelAdmin):
